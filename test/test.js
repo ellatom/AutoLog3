@@ -49,7 +49,7 @@ describe('get console and performance logs', function(){
 
     it('should be getting performance logs', async (done) => {
 
-        for (let i = 0; i < runCycle; i++)//it will run only if in config defined. reducing first cycle
+        for (let i = 0; i < runCycle; i++)//varaiable runCycle defines amount of cycles, default set to 1.
         {
             const testNetworkLogs = instance_webdriver.manage().logs().get('performance').then((browserLogs) => {
                 let data = "[";
