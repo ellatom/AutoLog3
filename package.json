@@ -1,0 +1,26 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha test/test.js --timeout 70000",
+    "test:awesome": "mocha --reporter mochawesome || true",
+    "open:report": "open mochawesome-report/mochawesome.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chai": "^4.3.4",
+    "glob": "^7.1.6",
+    "mocha": "^8.3.2"
+  },
+  "devDependencies": {
+    "mochawesome": "^6.2.2"
+  }
+}

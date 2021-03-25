@@ -1,0 +1,157 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 2,
+    "passes": 2,
+    "pending": 0,
+    "failures": 0,
+    "start": "2021-03-25T10:53:24.870Z",
+    "end": "2021-03-25T10:53:24.896Z",
+    "duration": 26,
+    "testsRegistered": 2,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "0058bb15-13da-4c49-b82a-324ea3770738",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "4f392766-03d3-42fb-8103-edf82e30b92b",
+          "title": "get console and performance logs",
+          "fullFile": "/home/ellatom/Desktop/HTMLSENDBOX/NodeServer/LogsAutomation/test/test.js",
+          "file": "/test/test.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"get console and performance logs\"",
+              "fullTitle": "get console and performance logs \"before all\" hook in \"get console and performance logs\"",
+              "timedOut": false,
+              "duration": 6,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "instance_webdriver = browser.getDriver(webdriver);\nbrowser.navigateToBasicUrl(instance_webdriver);\nbrowser.sleepOnLoading(instance_webdriver);",
+              "err": {},
+              "uuid": "532b1f72-39b9-421a-ad6f-66190f3c3c8f",
+              "parentUUID": "4f392766-03d3-42fb-8103-edf82e30b92b",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [
+            {
+              "title": "\"after all\" hook in \"get console and performance logs\"",
+              "fullTitle": "get console and performance logs \"after all\" hook in \"get console and performance logs\"",
+              "timedOut": false,
+              "duration": 0,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "browser.driverQuit(instance_webdriver);",
+              "err": {},
+              "uuid": "f634403a-8977-45d7-9b07-4144b5d9c8ff",
+              "parentUUID": "4f392766-03d3-42fb-8103-edf82e30b92b",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "tests": [
+            {
+              "title": "should be getting console log",
+              "fullTitle": "get console and performance logs should be getting console log",
+              "timedOut": false,
+              "duration": 1,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "for (let i = 0; i < runCycle - 1; i++)//it will run only if in config defined. reducing first cycle\n        {\n            const consoleEnteries = instance_webdriver.manage().logs().get('browser').then((varr) => {\n                let data = \"[\";\n                varr && varr.length && varr.forEach(async (element) => {\n                    let m = JSON.stringify(element) + \",\";\n                    data += m;\n                })\n                data = data.substring(0, data.length - 1);\n                data += \"]\"\n                fs.writeFileSync('./test/Logs/Consolelog/' + Date.now() + \".json\", data, function (err) {\n                    if (err) return console.log(err);\n                });\n            }).catch(done);\n        }\n        done();",
+              "err": {},
+              "uuid": "0a912861-279d-4356-af1d-82ec8656dd7e",
+              "parentUUID": "4f392766-03d3-42fb-8103-edf82e30b92b",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should be getting performance logs",
+              "fullTitle": "get console and performance logs should be getting performance logs",
+              "timedOut": false,
+              "duration": 0,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "for (let i = 0; i < runCycle - 1; i++)//it will run only if in config defined. reducing first cycle\n        {\n            const testNetworkLogs = instance_webdriver.manage().logs().get('performance').then((browserLogs) => {\n                let data = \"[\";\n                browserLogs.forEach(async (browserLog) => {\n                    let m = JSON.stringify(JSON.parse(browserLog.message).message) + \",\";\n                    data += m;\n                });\n                data = data.substring(0, data.length - 1);\n                data += \"]\"\n                fs.writeFileSync('./test/Logs/Performancelog/' + Date.now() + '.json', data, function (err) {\n                    if (err) return console.log(err);\n                });\n            }).catch(done);\n        }\n        done();",
+              "err": {},
+              "uuid": "b808196e-9337-4395-9a7b-158801b57627",
+              "parentUUID": "4f392766-03d3-42fb-8103-edf82e30b92b",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "0a912861-279d-4356-af1d-82ec8656dd7e",
+            "b808196e-9337-4395-9a7b-158801b57627"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "8.3.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "6.2.2"
+    },
+    "marge": {
+      "options": null,
+      "version": "5.2.0"
+    }
+  }
+}
