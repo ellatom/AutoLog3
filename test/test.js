@@ -4,8 +4,9 @@ import browser from '../src/MainPage/mainPage.js';
 import { runCycle } from '../src/Config/config.js';
 import fs from 'fs';
 
-//cmd path:/NodeServer/LogsAutomation/ command:npm test(only run no report)
-//npm run test:awesome
+//command to run tests without report:npm test
+//command in terminal to produce report : npm run test:awesome
+//open report in file mochawesome.html with Live Server
 
 describe('get console and performance logs', function(){
 
@@ -23,7 +24,7 @@ describe('get console and performance logs', function(){
 
     it('should be getting console log', (done) => {
 
-        for (let i = 0; i < runCycle; i++)//it will run only if in config defined. reducing first cycle
+        for (let i = 0; i < runCycle; i++)//varaiable runCycle defines amount of cycles, default set to 1.
         {
 
             const consoleEnteries = instance_webdriver.manage().logs().get('browser').then((varr) => {
