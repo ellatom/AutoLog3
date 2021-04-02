@@ -1,10 +1,7 @@
 require('mocha');
 const webdriver = require('selenium-webdriver');
 const browser = require('../src/MainPage/mainPage.js');
-const { basicUrl, runCycle, pathToConsoleLog, pathToPerformanceLog } = require('../src/Config/config.js');
-const fs = require('fs');
-const _http = require('selenium-webdriver/http');
-const { doesNotMatch } = require('assert');
+const { runCycle, pathToConsoleLog, pathToPerformanceLog } = require('../src/Config/config.js');
 
 //command to run tests without report:npm test
 //command in terminal to produce report : npm run test:awesome
@@ -12,7 +9,7 @@ const { doesNotMatch } = require('assert');
 
 describe('get console and performance logs', function () {
 
-    this.timeout(0);//130000
+    this.timeout(0);//or 130000
     let instance_webdriver;
     let instance_reuse_webdriver;
     let sessionId;
