@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test/test.js --timeout 70000",
+    "test": "mocha test/test.js --timeout 90000",
     "test:awesome": "mocha --reporter mochawesome || true",
     "open:report": "open mochawesome-report/mochawesome.html"
   },

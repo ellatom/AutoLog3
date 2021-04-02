@@ -1,73 +1,63 @@
-import 'mocha';
-import webdriver from 'selenium-webdriver';
-import browser from '../src/MainPage/mainPage.js';
-import { runCycle } from '../src/Config/config.js';
-import fs from 'fs';
+require('mocha');
+const webdriver = require('selenium-webdriver');
+const browser = require('../src/MainPage/mainPage.js');
+const { basicUrl, runCycle, pathToConsoleLog, pathToPerformanceLog } = require('../src/Config/config.js');
+const fs = require('fs');
+const _http = require('selenium-webdriver/http');
+const { doesNotMatch } = require('assert');
 
 //command to run tests without report:npm test
 //command in terminal to produce report : npm run test:awesome
 //open report in file mochawesome.html with Live Server
 
-describe('get console and performance logs', function(){
+describe('get console and performance logs', function () {
 
-    this.timeout(4000);
+    this.timeout(0);//130000
     let instance_webdriver;
+    let instance_reuse_webdriver;
+    let sessionId;
+    let quit = false;
 
-    before(() => {
+    before(async() => {
         instance_webdriver = browser.getDriver(webdriver);
         browser.navigateToBasicUrl(instance_webdriver);
         browser.sleepOnLoading(instance_webdriver);
+        sessionId= await instance_webdriver.getSession();
+
     })
     after(() => {
-        browser.driverQuit(instance_webdriver);
+        // quit && browser.driverQuit(instance_webdriver);
     })
 
-    it('should be getting console log', (done) => {
+    it('should be creating console log files', async () => {
 
         for (let i = 0; i < runCycle; i++)//varaiable runCycle defines amount of cycles, default set to 1.
         {
+            console.log("My i is:" + i);
 
-            const consoleEnteries = instance_webdriver.manage().logs().get('browser').then((varr) => {
-                let data = "[";
-
-                varr && varr.length && varr.forEach(async (element) => {
-                    let m = JSON.stringify(element) + ",";
-                    data += m;
-                })
-                data = data.substring(0, data.length - 1);
-                data += "]"
-
-                fs.writeFileSync('./test/Logs/Consolelog/' + Date.now() + ".json", data, function (err) {
-                    if (err) return console.log(err);
-                });
-            }).catch(done);
+            if (i > 0) {
+                instance_reuse_webdriver = browser.reuseWebdriver(browser, webdriver, sessionId);
+                await browser.setConsoleEnteries(instance_reuse_webdriver, pathToConsoleLog);
+            }
+            else
+                await browser.setConsoleEnteries(instance_webdriver, pathToConsoleLog);    
         }
+    });
 
-        done();
-        });
-
-
-    it('should be getting performance logs', async (done) => {
+    it('should be creating performance logs files', async () => {
 
         for (let i = 0; i < runCycle; i++)//varaiable runCycle defines amount of cycles, default set to 1.
         {
-            const testNetworkLogs = instance_webdriver.manage().logs().get('performance').then((browserLogs) => {
-                let data = "[";
-                browserLogs.forEach(async (browserLog) => {
-                    let m = JSON.stringify(JSON.parse(browserLog.message).message) + ",";
-                    data += m;
-                });
+            console.log("My i is:" + i);
 
-                data = data.substring(0, data.length - 1);
-                data += "]"
-
-                fs.writeFileSync('./test/Logs/Performancelog/' + Date.now() + '.json', data, function (err) {
-                    if (err) return console.log(err);
-                });
-
-            }).catch(done);
+            if (i > 0) {
+                instance_reuse_webdriver = browser.reuseWebdriver(browser, webdriver, sessionId);
+                await browser.setPerformanceEnteries(instance_reuse_webdriver, pathToPerformanceLog);
+            }
+            else
+                await browser.setPerformanceEnteries(instance_webdriver, pathToPerformanceLog);
         }
+        quit = true;
 
-        done();
-        });
-}); 
+    });
+});
