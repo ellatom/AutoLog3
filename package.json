@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test/test.js --timeout 90000",
+    "test": "mocha test/test.js",
     "test:awesome": "mocha --reporter mochawesome || true",
     "open:report": "open mochawesome-report/mochawesome.html"
   },

@@ -40,17 +40,21 @@ module.exports = {
     },
     async setConsoleEnteries(webdriver, path) {
 
+        let result;
         await webdriver.manage().logs().get('browser').then((varr) => {
             let data = this.formatConsoleData(varr);
-            this.saveData(data, path);
+            result = this.saveData(data, path);
         })
+        return result;
     },
     async setPerformanceEnteries(instance_webdriver, path) {
+        
+        let result;
         await instance_webdriver.manage().logs().get('performance').then(async (browserLogs) => {
             let data = this.formatPerformanceData(browserLogs);
-            this.saveData(data, path);
-
+            result=this.saveData(data, path);
         });
+        return result;
     },
     formatConsoleData(varr) {
         let data = "[";
@@ -80,6 +84,7 @@ module.exports = {
             fs.writeFileSync(path + Date.now() + ".json", data, function (err) {
                 if (err) return console.log(err);
             });
+        return true;
     },
     driverQuit(webdriver) {
         return webdriver.quit();
