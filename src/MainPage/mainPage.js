@@ -1,28 +1,46 @@
 
-const { browserName, basicUrl } = require('../Config/config.js');
+const { browserName, basicUrl, platformName } = require('../Config/config.js');
 const fs = require('fs');
 
 module.exports = {
+    
+    initDriver(instance_webdriver,webdriver){
 
+        instance_webdriver = this.getDriver(webdriver);
+        this.maximizeWindow(instance_webdriver);
+        this.navigateToBasicUrl(instance_webdriver);
+        this.sleepOnLoading(instance_webdriver);
+        return instance_webdriver;
+    },
     getDriver(webdriver) {
         return new webdriver.Builder()
             .withCapabilities({
                 browserName: browserName,
+                platformName: platformName,
                 chromeOptions: {
                     perfLoggingPrefs: {
                         enableNetwork: true
-                    }
-                }, loggingPrefs: {
+                    },
+                }, 
+                'goog:loggingPrefs': {//to prevent the performance error
                     performance: 'ALL',
                     browser: 'ALL'
-                }
+                },
+                w3c: false,
             }).build();
+    },
+    maximizeWindow(webdriver){
+        webdriver.manage().window().maximize();
     },
     navigateToBasicUrl(webdriver) {
         return webdriver.get(basicUrl);
     },
     sleepOnLoading(webdriver) {
         return (webdriver).sleep(30000);
+    },
+    async getSessionId(instance_webdriver){
+        sessionId= await instance_webdriver.getSession();
+        return sessionId;
     },
     async getSessionId(webdriver) {
         let sessionId;

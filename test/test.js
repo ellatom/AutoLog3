@@ -18,11 +18,8 @@ describe('get console and performance logs', function () {
     let quit = false;
 
     before(async() => {
-        instance_webdriver = browser.getDriver(webdriver);
-        browser.navigateToBasicUrl(instance_webdriver);
-        browser.sleepOnLoading(instance_webdriver);
-        sessionId= await instance_webdriver.getSession();
-
+        instance_webdriver = browser.initDriver(instance_webdriver,webdriver);
+        sessionId= await browser.getSessionId(instance_webdriver);
     })
     after(() => {
         // quit && browser.driverQuit(instance_webdriver);
