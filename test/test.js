@@ -43,7 +43,7 @@ describe('get console and performance logs', function () {
             } 
             resultConsole||resultPerformance ? counter += 1 : "";
         }
-        assert.equal(counter,runCycle,"not all console log files were created");
+        assert.equal(counter,runCycle,"not all log files were created");
     });
 
 });
