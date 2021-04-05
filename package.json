@@ -17,7 +17,8 @@
     "axios": "^0.21.1",
     "chai": "^4.3.4",
     "glob": "^7.1.6",
-    "mocha": "^8.3.2"
+    "mocha": "^8.3.2",
+    "selenium-webdriver": "^4.0.0-beta.2"
   },
   "devDependencies": {
     "mochawesome": "^6.2.2"

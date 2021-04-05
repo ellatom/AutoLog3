@@ -22,7 +22,7 @@ describe('get console and performance logs', function () {
         sessionId= await browser.getSessionId(instance_webdriver);
     })
     after(() => {
-        // quit && browser.driverQuit(instance_webdriver);
+        quit && browser.driverQuit(instance_webdriver);
     })
 
     it('should be creating console log files', async () => {
@@ -33,37 +33,17 @@ describe('get console and performance logs', function () {
         for (let i = 0; i < runCycle; i++)//varaiable runCycle defines amount of cycles, default set to 1.
         {
             if (i > 0) {
-                instance_reuse_webdriver = browser.reuseWebdriver(browser, webdriver, sessionId);
-                result= await browser.setConsoleEnteries(instance_reuse_webdriver, pathToConsoleLog);
+                instance_reuse_webdriver = browser.reuseWebdriver( webdriver, sessionId);
+                resultConsole= await browser.setEnteries(instance_reuse_webdriver, 'browser',pathToConsoleLog);
+                resultPerformance = await browser.setEnteries(instance_reuse_webdriver,'performance',pathToPerformanceLog);
             }
-            else
-                result=await browser.setConsoleEnteries(instance_webdriver, pathToConsoleLog); 
-            
-            result ? counter += 1 : "";
+            else{
+                resultConsole = await browser.setEnteries(instance_webdriver,'browser', pathToConsoleLog); 
+                resultPerformance = await browser.setEnteries(instance_webdriver,'performance', pathToPerformanceLog); 
+            } 
+            resultConsole||resultPerformance ? counter += 1 : "";
         }
         assert.equal(counter,runCycle,"not all console log files were created");
-
     });
 
-    it('should be creating performance logs files', async () => {
-
-        let result;
-        let counter =0;
-
-        for (let i = 0; i < runCycle; i++)//varaiable runCycle defines amount of cycles, default set to 1.
-        {
-            if (i > 0) {
-                instance_reuse_webdriver = browser.reuseWebdriver(browser, webdriver, sessionId);
-                result= await browser.setPerformanceEnteries(instance_reuse_webdriver, pathToPerformanceLog);
-            }
-            else
-                result = await browser.setPerformanceEnteries(instance_webdriver, pathToPerformanceLog);
-
-            result ? counter += 1 : "";
-        }
-
-        assert.equal(counter,runCycle,"not all performance log files were created");
-        quit = true;
-
-    });
 });

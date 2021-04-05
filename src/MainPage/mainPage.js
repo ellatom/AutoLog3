@@ -18,11 +18,12 @@ module.exports = {
                 browserName: browserName,
                 platformName: platformName,
                 chromeOptions: {
+                    args:[],
                     perfLoggingPrefs: {
                         enableNetwork: true
                     },
                 }, 
-                'goog:loggingPrefs': {//to prevent the performance error
+                'goog:loggingPrefs': {
                     performance: 'ALL',
                     browser: 'ALL'
                 },
@@ -42,64 +43,24 @@ module.exports = {
         sessionId= await instance_webdriver.getSession();
         return sessionId;
     },
-    async getSessionId(webdriver) {
-        let sessionId;
-        await webdriver.session_.then(function (sessionData) {
-            sessionId = sessionData.id_;
-        })
-        return sessionId;
-    },
-    reuseWebdriver(browser, webdriver, sessionId) {
-        instance_webdriver2 = browser.getDriver(webdriver);
+    reuseWebdriver(webdriver, sessionId) {
+        instance_webdriver2 = this.getDriver(webdriver);
         instance_webdriver2.session_ = sessionId;
-        browser.navigateToBasicUrl(instance_webdriver2);
-        browser.sleepOnLoading(instance_webdriver2);
+        this.navigateToBasicUrl(instance_webdriver2);
+        this.sleepOnLoading(instance_webdriver2);
         return instance_webdriver2;
     },
-    async setConsoleEnteries(webdriver, path) {
+    async setEnteries(webdriver, getName ,path) {
 
         let result;
-        await webdriver.manage().logs().get('browser').then((varr) => {
-            let data = this.formatConsoleData(varr);
-            result = this.saveData(data, path);
+        await webdriver.manage().logs().get(getName).then((varr) => {
+            result = this.saveData(JSON.stringify(varr), path);
         })
         return result;
-    },
-    async setPerformanceEnteries(instance_webdriver, path) {
-        
-        let result;
-        await instance_webdriver.manage().logs().get('performance').then(async (browserLogs) => {
-            let data = this.formatPerformanceData(browserLogs);
-            result=this.saveData(data, path);
-        });
-        return result;
-    },
-    formatConsoleData(varr) {
-        let data = "[";
-
-        varr && varr.length && varr.forEach((element) => {
-            let m = JSON.stringify(element) + ",";
-            data += m;
-        })
-
-        data = data.substring(0, data.length - 1);
-        data += "]"
-        return data;
-    },
-    formatPerformanceData(browserLogs) {
-        let data = "[";
-        browserLogs.forEach((browserLog) => {
-            let m = JSON.stringify(JSON.parse(browserLog.message).message) + ",";
-            data += m;
-        });
-
-        data = data.substring(0, data.length - 1);
-        data += "]";
-        return data;
     },
     saveData(data, path) {
         if (data != ']')
-            fs.writeFileSync(path + Date.now() + ".json", data, function (err) {
+            fs.writeFileSync(path + Date.now() + ".json", data,{ encoding: 'utf8' }, function (err) {
                 if (err) return console.log(err);
             });
         return true;
