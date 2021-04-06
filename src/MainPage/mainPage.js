@@ -60,6 +60,9 @@ module.exports = {
         });
         return result;
     },
+    findDivINFile(str){//str = "adivdddddfdiv"
+        return str.split("div").length-1;//2
+    },
     formatConsoleData(varr) {
         return JSON.stringify(varr);
     },
