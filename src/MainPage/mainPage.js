@@ -55,39 +55,21 @@ module.exports = {
         let result;
         await webdriver.manage().logs().get(getName).then((varr) => {
             let data;
-            // let perfData=[];//nested data message -problem 
-            // getName === 'browser'? (data = JSON.stringify(varr,null,4),result = this.saveData(data, path)):
-            // ( varr.forEach((varr) => {
-            //     perfData.push(JSON.stringify(JSON.parse(varr.message).message,null,4));
-            // }))
-            // result = this.saveData(JSON.stringify(perfData,null,4), path);
             getName === 'browser'? data=this.formatConsoleData(varr) : data=this.formatPerformanceData(varr)
             result = this.saveData(data, path);
         });
         return result;
     },
     formatConsoleData(varr) {
-        let data = "[";
-
-        varr && varr.length && varr.forEach((element) => {
-            let m = JSON.stringify(element) + ",";
-            data += m;
-        })
-
-        data = data.substring(0, data.length - 1);
-        data += "]"
-        return data;
+        return JSON.stringify(varr);
     },
-    formatPerformanceData(browserLogs) {
-        let data = "[";
+    formatPerformanceData(browserLogs) {//Network.requestWillBeSent = GET request ,Network.requestWillBeSent = POST request
+        let data = [];
         browserLogs.forEach((browserLog) => {
-            let m = JSON.stringify(JSON.parse(browserLog.message).message) + ",";
-            data += m;
+            data.push(JSON.parse(browserLog.message).message);
         });
 
-        data = data.substring(0, data.length - 1);
-        data += "]";
-        return data;
+        return JSON.stringify(data);
     },
     saveData(data, path) {
         if (data != ']')
