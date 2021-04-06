@@ -54,13 +54,44 @@ module.exports = {
 
         let result;
         await webdriver.manage().logs().get(getName).then((varr) => {
-            result = this.saveData(JSON.stringify(varr), path);
-        })
+            let data;
+            // let perfData=[];//nested data message -problem 
+            // getName === 'browser'? (data = JSON.stringify(varr,null,4),result = this.saveData(data, path)):
+            // ( varr.forEach((varr) => {
+            //     perfData.push(JSON.stringify(JSON.parse(varr.message).message,null,4));
+            // }))
+            // result = this.saveData(JSON.stringify(perfData,null,4), path);
+            getName === 'browser'? data=this.formatConsoleData(varr) : data=this.formatPerformanceData(varr)
+            result = this.saveData(data, path);
+        });
         return result;
+    },
+    formatConsoleData(varr) {
+        let data = "[";
+
+        varr && varr.length && varr.forEach((element) => {
+            let m = JSON.stringify(element) + ",";
+            data += m;
+        })
+
+        data = data.substring(0, data.length - 1);
+        data += "]"
+        return data;
+    },
+    formatPerformanceData(browserLogs) {
+        let data = "[";
+        browserLogs.forEach((browserLog) => {
+            let m = JSON.stringify(JSON.parse(browserLog.message).message) + ",";
+            data += m;
+        });
+
+        data = data.substring(0, data.length - 1);
+        data += "]";
+        return data;
     },
     saveData(data, path) {
         if (data != ']')
-            fs.writeFileSync(path + Date.now() + ".json", data,{ encoding: 'utf8' }, function (err) {
+            fs.writeFileSync(path + Date.now() + ".json", data, function (err) {
                 if (err) return console.log(err);
             });
         return true;
